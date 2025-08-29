@@ -1,4 +1,4 @@
-﻿using System.Diagnostics;
+using System.Diagnostics;
 using ImGuiNET;
 using T3.Core.DataTypes.Vector;
 using T3.Core.Model;
@@ -58,6 +58,20 @@ internal sealed partial class MagGraphCanvas
         var pMax = TransformPosition(item.DampedPosOnCanvas + item.Size);
         var pMinVisible = pMin;
         var pMaxVisible = pMax;
+
+        
+        var sQuareOrRound = 0f;
+        var round = !UserSettings.Config.OpSquare;
+        if (round)
+        {
+            // Round corners
+            sQuareOrRound = CanvasScale < 0.5 ? 0 : 5 * CanvasScale;
+        }
+        else
+        {
+            // Square corners
+            sQuareOrRound = 0f;
+        }
 
         // Adjust size when snapped
         var snappedBorders = Borders.None;
@@ -120,7 +134,7 @@ internal sealed partial class MagGraphCanvas
                                Color.Mix(
                                          ColorVariations.OperatorBackground.Apply(typeColor),
                                          ColorVariations.OperatorBackgroundIdle.Apply(typeColor),
-                                         idleFactor), CanvasScale < 0.5f ? 0 : 5 * CanvasScale,
+                                         idleFactor), sQuareOrRound,
                                imDrawFlags);
 
         // Snapped borders
@@ -142,7 +156,7 @@ internal sealed partial class MagGraphCanvas
         if (isSelected)
         {
             drawList.AddRect(pMinVisible, pMaxVisible, UiColors.ForegroundFull.Fade(_context.GraphOpacity),
-                             CanvasScale < 0.5 ? 0 : 6 * CanvasScale,
+                             sQuareOrRound,
                              imDrawFlags);
         }
         
@@ -151,7 +165,7 @@ internal sealed partial class MagGraphCanvas
         if (isHighlighted)
         {
             drawList.AddRect(pMinVisible, pMaxVisible, UiColors.ForegroundFull.Fade(Blink),
-                             CanvasScale < 0.5 ? 0 : 6 * CanvasScale,
+                             sQuareOrRound,
                              imDrawFlags);
         }
 
@@ -206,7 +220,7 @@ internal sealed partial class MagGraphCanvas
         // {
         //     item.Select(_nodeSelection);
         // }
-
+        
         if (customUiResult == SymbolUi.Child.CustomUiResult.None && CanvasScale > 0.2f)
         {
             // Draw Texture thumbnail
@@ -316,7 +330,7 @@ internal sealed partial class MagGraphCanvas
                     }
 
                     // Draw selection outline...
-                    drawList.AddRect(pMinVisible, pMaxVisible, UiColors.ForegroundFull.Fade(_hoverPickingProgress * 0.4f), 6 * CanvasScale, imDrawFlags);
+                    drawList.AddRect(pMinVisible, pMaxVisible, UiColors.ForegroundFull.Fade(_hoverPickingProgress * 0.4f), sQuareOrRound, imDrawFlags);
 
                     ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, new Vector2(8, 8));
                     ImGui.PushStyleVar(ImGuiStyleVar.WindowRounding, 3);

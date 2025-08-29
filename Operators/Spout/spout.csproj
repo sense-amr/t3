@@ -8,9 +8,9 @@
     <AssemblyName>$(RootNamespace)</AssemblyName>
     <Configurations>Debug;Release</Configurations>
     <Platforms>AnyCPU</Platforms>
-    <VersionPrefix>1.0.3</VersionPrefix>
+    <VersionPrefix>1.0.4</VersionPrefix>
     <HomeGuid>00000000-0000-0000-0000-000000000000</HomeGuid>
-    <EditorVersion>$(TixlVersion)</EditorVersion>
+    <EditorVersion>4.0.2</EditorVersion>
     <IsEditorOnly>false</IsEditorOnly>
     <DisableTransitiveProjectReferences>true</DisableTransitiveProjectReferences>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
