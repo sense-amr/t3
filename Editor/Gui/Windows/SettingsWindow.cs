@@ -150,10 +150,11 @@ internal sealed class SettingsWindow : Window
                                                           UserSettings.Defaults.EditorHoverPreview);
 
                         changed |= FormInputs.AddFloat("Connection Line Thick",
-                                                   ref UserSettings.Config.ScrollSmoothing,
-                                                   0.0f, 0.2f, 0.01f, true,
-                                                   null,
-                                                   UserSettings.Defaults.ScrollSmoothing);
+                              ref UserSettings.Config.ScrollSmoothing,
+                              0.0f, 0.2f, 0.01f, true,
+                              true,
+                              null, // <-- Fix: pass null for the string? parameter
+                              UserSettings.Defaults.ScrollSmoothing);
                     }
 
                     FormInputs.AddVerticalSpace();
