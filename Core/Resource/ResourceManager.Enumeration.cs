@@ -93,11 +93,17 @@ public static partial class ResourceManager
         Func<string, string, SearchOption, IEnumerable<string>> searchFunc = useFolder
                                                                                  ? Directory.EnumerateDirectories
                                                                                  : Directory.EnumerateFiles;
+
+        var directory = package.ResourcesFolder;
+        if (!Directory.Exists(directory))
+        {
+            yield break;
+        }
         
         IEnumerable<string> paths;
         try
         {
-            paths = searchFunc(package.ResourcesFolder, "*", SearchOption.AllDirectories);
+            paths = searchFunc(directory, "*", SearchOption.AllDirectories);
         }
         catch (Exception e)
         {
@@ -145,14 +151,14 @@ public static partial class ResourceManager
                 case PathMode.Relative:
                     if(!_relativePathsCache.TryGetValue(path, out result))
                     {
-                        result = path[(package.ResourcesFolder.Length + 1)..];
+                        result = path[(directory.Length + 1)..];
                         _relativePathsCache.TryAdd(path, result);
                     }
                     break;
                 case PathMode.Aliased:
                     if(!_aliasedPathsCache.TryGetValue(path, out result))
                     {
-                        result = $"/{package.Alias}/{path.AsSpan()[(package.ResourcesFolder.Length + 1)..]}";
+                        result = $"/{package.Alias}/{path.AsSpan()[(directory.Length + 1)..]}";
                         _aliasedPathsCache.TryAdd(path, result);
                     }
                     break;
