@@ -278,11 +278,12 @@ internal sealed class SettingsWindow : Window
 
                 case Categories.Project:
                 {
-                    var projectSettingsChanged = false;
+                        
+                        var projectSettingsChanged = false;
                     FormInputs.AddSectionHeader("Project specific settings");
-                    FormInputs.AddVerticalSpace();
-
-                    FormInputs.AddSectionSubHeader("Project Settings");
+                        //FormInputs.AddVerticalSpace();
+                        FormInputs.AddSectionSubHeader("Project Settings");
+                    
                     changed |= FormInputs.AddStringInput("Project Directory",
                                                          ref UserSettings.Config.ProjectsFolder,
                                                          "Folder",
@@ -292,9 +293,11 @@ internal sealed class SettingsWindow : Window
                                                          Changing it will require a restart!
                                                          """,
                                                          FileLocations.DefaultProjectFolder);
-                    
-                    FormInputs.AddVerticalSpace();
-                    changed |= FormInputs.AddStringInput("UserName",
+                        
+
+                        FormInputs.AddVerticalSpace();
+                        
+                        changed |= FormInputs.AddStringInput("UserName",
                                                          ref UserSettings.Config.UserName,
                                                          "Nickname",
                                                           GraphUtils.IsValidProjectName(UserSettings.Config.UserName)? null :"Must not contain spaces or special characters",
@@ -303,16 +306,29 @@ internal sealed class SettingsWindow : Window
                                                            Your nickname should be short and not contain spaces or special characters.
                                                            """,
                                                            Environment.UserName.ToValidClassName("Unknown"));                    
-                    FormInputs.SetIndentToLeft();
-                    
-                    changed |= FormInputs.AddCheckBox("Enable Backup",
+                    //FormInputs.SetIndentToLeft();
+                        FormInputs.AddSectionSubHeader("            Backup Directory");
+                        // Add a string input for the backup directory
+                        changed |= FormInputs.AddStringInput(
+
+                            " ",
+                            ref UserSettings.Config.BackupFolder, " ",
+                            Directory.Exists(UserSettings.Config.BackupFolder) ? null : "Please Enter folder location",
+                            """
+    Enter a custom folder location for backups.
+    Press Reset button on the right to use the default location.
+    Requires restart to update folder location.
+    """,
+                            Path.Combine(FileLocations.SettingsDirectory, "Backup")
+                        );
+                        changed |= FormInputs.AddCheckBox("Enable Backup",
                                                       ref UserSettings.Config.EnableAutoBackup,
                                                       $"""
                                                        Save backups of your projects every {AutoBackup.AutoBackup.SecondsBetweenSaves / 60} min. Backup files will be thinned out so fewer backups are kept the older they are.
                                                        The total number of files stored will not exceed 40.
                                                        Files exceed 100mb will not be archived.
 
-                                                       They are saved as zip-archives to {AutoBackup.AutoBackup.BackupDirectory}.
+                                                       They are saved as zip-archives to {UserSettings.Config.BackupFolder}.
                                                        """,
                                                       UserSettings.Defaults.EnableAutoBackup);
                     

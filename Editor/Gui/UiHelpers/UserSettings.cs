@@ -5,6 +5,7 @@ using T3.Core.Animation;
 using T3.Core.IO;
 using T3.Core.UserData;
 using T3.Editor.Compilation;
+using T3.Editor.Gui.AutoBackup;
 using T3.Editor.Gui.Windows;
 using T3.Editor.Gui.Windows.TimeLine;
 // ReSharper disable MemberCanBeInternal
@@ -37,12 +38,12 @@ public sealed class UserSettings : Settings<UserSettings.ConfigData>
 
         [JsonConverter(typeof(StringEnumConverter))]
         public GraphHoverModes HoverMode = GraphHoverModes.LastValue;
-        
+
         // Projects
 
         public string ProjectsFolder = FileLocations.DefaultProjectFolder;
-        
-            
+        public string BackupFolder = AutoBackup.AutoBackup.DefaultBackupDirectory;
+
         // UI-Elements
         public bool ShowThumbnails = true;
         public bool ShowMainMenu = true;
@@ -150,11 +151,14 @@ public sealed class UserSettings : Settings<UserSettings.ConfigData>
 
         public bool ExpandSpectrumVisualizerVertically = true;
         public int GridOutputColumnCount = 16;
+        internal string BackupDirectory;
 
         //private string _defaultNewProjectDirectory = _defaultProjectFolder;
         //public string DefaultNewProjectDirectory => _defaultNewProjectDirectory ??= _defaultProjectFolder;
 
         private static readonly string _defaultProjectFolder = FileLocations.DefaultProjectFolder;
+
+        //public ref string BackupDirectory => throw new NotImplementedException();
     }
 
     public enum ValueEditMethods

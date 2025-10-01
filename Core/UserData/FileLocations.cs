@@ -40,14 +40,15 @@ public static string TestReferencesFolder => Path.Combine(".tixl", TestsSubFolde
     public static readonly string SettingsDirectory =
         Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), 
                      AppSubFolder
-                     
+
                      // Skip process name to avoid double nesting of TiXL
                      // This will lump together logs from player
-                     
+
                      //, Process.GetCurrentProcess().ProcessName
                      );
-    
+
     public static readonly string DefaultProjectFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), AppSubFolder);
+   // public static readonly string DefaultBackupDirectory = Path.Combine(FileLocations.SettingsDirectory, "Backup");
     public const string ResourcesSubfolder = "Resources";
     public const string DependenciesFolder = "dependencies";
     public const string SymbolsSubfolder = "Symbols";

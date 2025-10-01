@@ -38,6 +38,8 @@ using VertexShader = T3.Core.DataTypes.VertexShader;
 using PixelShader = T3.Core.DataTypes.PixelShader;
 using Texture2D = T3.Core.DataTypes.Texture2D;
 
+
+
 namespace T3.Player;
 
 internal static partial class Program
@@ -61,6 +63,9 @@ internal static partial class Program
 
         [Option(Default = true, Required = false, HelpText = "Show log messages.")]
         public bool Logging { get; set; }
+
+        [Option(Default = 0, Required = false, HelpText = "Select display index for window (0=primary, 1=secondary, etc.).")]
+        public int Display { get; set; }
     }
 
     [STAThread]
@@ -68,7 +73,8 @@ internal static partial class Program
     {
         CoreUi.Instance = new MsForms.MsForms();
         BlockingWindow.Instance = new SilkWindowProvider();
-            
+     
+
         var settingsPath = Path.Combine(FileLocations.StartFolder, "exportSettings.json");
         if (!JsonUtils.TryLoadingJson(settingsPath, out ExportSettings exportSettings))
         {
@@ -120,12 +126,16 @@ internal static partial class Program
 
             _renderForm = new RenderForm(exportSettings!.ApplicationTitle)
                               {
+
                                   ClientSize = new Size(resolution.X, resolution.Y),
                                   AllowUserResizing = false,
                                   Icon = icon,
+
                               };
 
+            
             var windowHandle = _renderForm.Handle;
+
 
             // SwapChain description
             var desc = new SwapChainDescription
@@ -170,6 +180,7 @@ internal static partial class Program
             factory.MakeWindowAssociation(_renderForm.Handle, WindowAssociationFlags.IgnoreAll);
 
             InitializeInput(_renderForm);
+            
 
             // New RenderTargetView from the backbuffer
             _backBuffer = Resource.FromSwapChain<SharpDX.Direct3D11.Texture2D>(_swapChain, 0);
@@ -292,6 +303,7 @@ internal static partial class Program
                 CloseApplication(true, message);
                 return;
             }
+           
 
             // TODO - implement proper shader pre-compilation as an option to instance instantiation
             // move this to core?
@@ -311,6 +323,9 @@ internal static partial class Program
             {
                 // Main loop
                 RenderLoop.Run(_renderForm, RenderCallback);
+                
+
+
             }
             catch (TimelineEndedException)
             {

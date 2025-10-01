@@ -868,6 +868,11 @@ internal static class FormInputs
         ImGui.PopFont();
         ImGui.PopStyleVar(2);
     }
+
+    internal static bool AddStringInput(string v1, ref object backupDirectory, string v2, string v3, string v4, string v5)
+    {
+        throw new NotImplementedException();
+    }
     #endregion
 
     private const int NotADefaultValue = Int32.MinValue;

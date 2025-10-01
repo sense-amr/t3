@@ -1,4 +1,5 @@
 #nullable enable
+using SharpDX.MediaFoundation;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
@@ -14,8 +15,13 @@ namespace T3.Editor.Gui.AutoBackup;
 
 internal static class AutoBackup
 {
-    public static int SecondsBetweenSaves { get; set; } = 3 * 60;
-    
+    public static int SecondsBetweenSaves { get; set; } = 1 * 900;
+    public static string BackupDirectory
+    {
+        get => UserSettings.Config.BackupFolder ?? DefaultBackupDirectory;
+        set => UserSettings.Config.BackupFolder = value;
+
+    }
     /// <summary>
     /// Should be call after all frame operators are completed
     /// </summary>
@@ -302,7 +308,8 @@ internal static class AutoBackup
 
     private static readonly Stopwatch _stopwatch = Stopwatch.StartNew();
     private static bool _isSaving;
-    internal static string BackupDirectory => Path.Combine(FileLocations.SettingsDirectory, "Backup");
+    internal static string DefaultBackupDirectory => Path.Combine(FileLocations.SettingsDirectory, "Backup");     
+    // internal static string BackupFolder => @"J:/TIXLBACKUPS";
 
     private static string[] SourcePaths
     {
