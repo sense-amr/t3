@@ -160,7 +160,16 @@ internal sealed class ParameterWindow : Window
             // Namespace and symbol
             ImGui.PushFont(Fonts.FontBold);
 
-            ImGui.TextUnformatted(op.Symbol.Name);
+            ImGui.TextUnformatted(op.Symbol.Name.AddSpacesForImGuiOutput());
+
+            // Check if the symbol name is clicked with CTRL
+            if (ImGui.IsItemHovered() && ImGui.IsMouseClicked(ImGuiMouseButton.Left) &&
+                (ImGui.GetIO().KeyCtrl || ImGui.GetIO().KeySuper))
+            {
+                ImGui.SetClipboardText("["+op.Symbol.Name+"]");
+            }
+            CustomComponents.TooltipForLastItem("CTRL + Click to copy symbol name to clipboard");
+
             ImGui.PopFont();
 
             ImGui.SameLine();
