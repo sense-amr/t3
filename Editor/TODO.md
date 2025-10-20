@@ -39,6 +39,15 @@
 - [ ] Snapshots: Layout snapshots like on Controller
 - [ ] Fix: Raymarch point
 
+## Feedback from Alex 2
+- [ ] Try to get rid of console
+- [ ] Import / Load projects to library 
+- [x] Press P again to unpin
+- [ ] Provide warning if project folder is owned by OneCloud
+- [ ] AssetHandling: Import multiple assets or even folders through drag&drop
+- [ ] Idea: Op templates?
+- [ ] Idea: Cursor Up/Down in parameter input widget to modify numerical values
+
 ## Project handling / Project HUB
 
 - [ ] Project settings should save output resolution
@@ -54,6 +63,7 @@
 - [ ] Panning/Zooming in CurveEdit-Popup opened from SampleCurveOp is broken 
 - [ ] Create connections from dragging out of parameter window
 - [ ] Refactor IStatusMessageProvider "Success" indication #714
+- [ ] Add shortcut to insert op on the right side
 
 ## UI-Scaling Issues (at x1.5):
 
