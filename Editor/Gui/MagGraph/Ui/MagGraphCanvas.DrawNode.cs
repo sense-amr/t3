@@ -262,7 +262,7 @@ internal sealed partial class MagGraphView
                 }
 
                 ImGui.PushFont(Fonts.FontNormal);
-                var labelSize = ImGui.CalcTextSize(name);
+                var labelSize = ImGui.CalcTextSize(name.AddSpacesForImGuiOutput());
                 ImGui.PopFont();
 
                 var paddingForPreview = hasPreview ? MagGraphItem.LineHeight + 15 : 0;
@@ -279,7 +279,7 @@ internal sealed partial class MagGraphView
                                  fontSize,
                                  labelPos,
                                  labelColor.Fade(CanvasScale.RemapAndClamp(0.3f, 0.7f, 0, 1)),
-                                 name);
+                                 name.AddSpacesForImGuiOutput());
             }
         }
 
@@ -527,7 +527,7 @@ internal sealed partial class MagGraphView
                         continue;
 
                     ImGui.PushFont(Fonts.FontSmall);
-                    var outputDefinitionName = outputLine.OutputUi.OutputDefinition.Name;
+                    var outputDefinitionName = outputLine.OutputUi.OutputDefinition.Name.AddSpacesForImGuiOutput();
                     var outputLabelSize = ImGui.CalcTextSize(outputDefinitionName) * smallFontScaleFactor;
                     ImGui.PopFont();
 
