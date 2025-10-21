@@ -366,7 +366,7 @@ internal sealed class WindowsUiContentDrawer : IUiContentDrawer<Device>
                             _deviceContext.PixelShader.SetShaderResource(0, srv);
                             _deviceContext.DrawIndexed((int)cmd.ElemCount, idxOffset, vtxOffset);
                         }
-                        catch (SharpDXException e)
+                        catch (SharpDX.SharpDXException e)
                         {
                             Log.Error(e.Message);
                         }
