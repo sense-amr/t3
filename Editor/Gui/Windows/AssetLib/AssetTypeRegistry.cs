@@ -40,7 +40,21 @@ public static class AssetTypeRegistry
                     {
                         PrimaryOperators = [new Guid("be52b670-9749-4c0d-89f0-d8b101395227")], // LoadObj
                         Color = UiColors.ColorForGpuData,
-                        Icon = Icon.FileDocument,
+                        Icon = Icon.FileGeometry,
+                    },
+                new AssetType("Gltf", [
+                        FileExtensionRegistry.GetId("glb"),
+                        FileExtensionRegistry.GetId("gltf"),
+                    ])
+                    {
+                        PrimaryOperators =
+                            [
+                                new Guid("92b18d2b-1022-488f-ab8e-a4dcca346a23"), // LoadGltf
+                                new Guid("00618c91-f39a-44ea-b9d8-175c996460dc"), // LoadGltfScene
+                                // TODO: add more
+                            ],
+                        Color = UiColors.ColorForGpuData,
+                        Icon = Icon.FileGeometry,
                     },
 
                 new AssetType("Image", [
@@ -58,29 +72,50 @@ public static class AssetTypeRegistry
                         Icon = Icon.FileImage,
                     },
 
+                new AssetType("Video", [
+                        FileExtensionRegistry.GetId("mp4"),
+                        FileExtensionRegistry.GetId("mov"),
+                        FileExtensionRegistry.GetId("mpg"),
+                        FileExtensionRegistry.GetId("mpeg"),
+                        FileExtensionRegistry.GetId("m4v"),
+                    ])
+                    {
+                        PrimaryOperators = [new Guid("914fb032-d7eb-414b-9e09-2bdd7049e049")], // PlayVideo
+                        Color = UiColors.ColorForTextures,
+                        Icon = Icon.FileVideo,
+                    },
+                
+                new AssetType("Audio", [
+                        FileExtensionRegistry.GetId("wav"),
+                        FileExtensionRegistry.GetId("mp3"),
+                        FileExtensionRegistry.GetId("ogg"),
+                    ])
+                    {
+                        PrimaryOperators = [new Guid("c2b2758a-5b3e-465a-87b7-c6a13d3fba48")], // PlayAudioClip
+                        Color = UiColors.ColorForValues,
+                        Icon = Icon.FileAudio,
+                    },
+
+                
                 new AssetType("Shader", [FileExtensionRegistry.GetId("hlsl")])
                     {
                         PrimaryOperators =
                             [
                                 new Guid("a256d70f-adb3-481d-a926-caf35bd3e64c"), // ComputeShader
-                                // TODO: add more
+                                new Guid("646f5988-0a76-4996-a538-ba48054fd0ad"), // VertexShader
+                                new Guid("f7c625da-fede-4993-976c-e259e0ee4985"), // PixelShader
                             ],
-                        Color = UiColors.ColorForGpuData,
-                        Icon = Icon.FileDocument,
+                        Color = UiColors.ColorForString,
+                        Icon = Icon.FileShader,
                     },
 
-                new AssetType("Gltf", [
-                        FileExtensionRegistry.GetId("glb"),
-                        FileExtensionRegistry.GetId("gltf"),
-                    ])
+                new AssetType("JSON", [FileExtensionRegistry.GetId("json")])
                     {
                         PrimaryOperators =
                             [
-                                new Guid("92b18d2b-1022-488f-ab8e-a4dcca346a23"), // LoadGltf
-                                new Guid("00618c91-f39a-44ea-b9d8-175c996460dc"), // LoadGltfScene
-                                // TODO: add more
+                                new Guid("5f71d2f8-98c8-4502-8f40-2ea4a1e18cca"), // ReadFile
                             ],
-                        Color = UiColors.ColorForGpuData,
+                        Color = UiColors.ColorForString,
                         Icon = Icon.FileDocument,
                     },
             ];
