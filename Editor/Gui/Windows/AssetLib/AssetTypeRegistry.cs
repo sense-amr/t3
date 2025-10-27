@@ -49,8 +49,8 @@ public static class AssetTypeRegistry
                     {
                         PrimaryOperators =
                             [
-                                new Guid("92b18d2b-1022-488f-ab8e-a4dcca346a23"), // LoadGltf
                                 new Guid("00618c91-f39a-44ea-b9d8-175c996460dc"), // LoadGltfScene
+                                new Guid("92b18d2b-1022-488f-ab8e-a4dcca346a23"), // LoadGltf
                                 // TODO: add more
                             ],
                         Color = UiColors.ColorForGpuData,
@@ -117,6 +117,16 @@ public static class AssetTypeRegistry
                             ],
                         Color = UiColors.ColorForString,
                         Icon = Icon.FileDocument,
+                    },
+                
+                new AssetType("TiXLFont", [FileExtensionRegistry.GetId("fnt")])
+                    {
+                        PrimaryOperators =
+                            [
+                                new Guid("fd31d208-12fe-46bf-bfa3-101211f8f497"), // Text
+                            ],
+                        Color = UiColors.ColorForCommands,
+                        Icon = Icon.FileT3Font,
                     },
             ];
     }

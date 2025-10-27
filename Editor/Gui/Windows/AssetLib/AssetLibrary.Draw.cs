@@ -45,6 +45,7 @@ internal sealed partial class AssetLibrary
     }
 
     private bool _expandToFileTriggered;
+    private static AssetFolder? _folderForMenu;
 
     private void DrawFolder(AssetFolder folder)
     {
@@ -71,17 +72,18 @@ internal sealed partial class AssetLibrary
             var isOpen = ImGui.TreeNodeEx(folder.Name);
             _state.TreeHandler.NoFolderOpen = false;
 
+            _folderForMenu = folder;
             CustomComponents.ContextMenuForItem(() =>
                                                 {
                                                     if (ImGui.MenuItem("Open in Explorer"))
                                                     {
-                                                        if (!string.IsNullOrEmpty(folder.AbsolutePath))
+                                                        if (!string.IsNullOrEmpty(_folderForMenu.AbsolutePath))
                                                         {
-                                                            CoreUi.Instance.OpenWithDefaultApplication(folder.AbsolutePath);
+                                                            CoreUi.Instance.OpenWithDefaultApplication(_folderForMenu.AbsolutePath);
                                                         }
                                                         else
                                                         {
-                                                            Log.Warning($"Failed to get path for {folder.AliasPath}");
+                                                            Log.Warning($"Failed to get path for {_folderForMenu.AliasPath}");
                                                         }
                                                     }
                                                 });
@@ -162,21 +164,29 @@ internal sealed partial class AssetLibrary
 
     private void DrawAssetItem(AssetItem asset)
     {
+        var isSelected = asset.AbsolutePath == _state.ActiveAbsolutePath;
+        
+        var fileConsumerOpSelected = _state.CompatibleExtensionIds.Count > 0;
+        var fileConsumerOpIsCompatible =  fileConsumerOpSelected 
+                                          && _state.CompatibleExtensionIds.Contains(asset.FileExtensionId);
+
+        // Skip not matching asset
+        if (fileConsumerOpSelected && !fileConsumerOpIsCompatible)
+            return;
+        
         ImGui.PushID(RuntimeHelpers.GetHashCode(asset));
         {
-            var defaultId = string.Empty;
-            var isSelected = asset.AbsolutePath == _state.ActiveAbsolutePath;
-
-            var fade = AssetLibState.CompatibleExtensionIds.Count == 0
+            
+            var fade = !fileConsumerOpSelected
                            ? 0.8f
-                           : !AssetLibState.CompatibleExtensionIds.Contains(asset.FileExtensionId)
-                               ? 0.2f
-                               : 1f;
+                           : fileConsumerOpIsCompatible
+                               ? 1f
+                               : 0.2f;
 
             var iconColor = ColorVariations.OperatorLabel.Apply(asset.AssetType?.Color ?? UiColors.Text);
             var icon = asset.AssetType?.Icon ?? Icon.FileImage;
             ImGui.SetCursorPosX(ImGui.GetCursorPosX() + 5);
-            if (ButtonWithIcon(defaultId,
+            if (ButtonWithIcon(string.Empty,
                                asset.FileInfo.Name,
                                icon,
                                iconColor.Fade(fade),
@@ -185,7 +195,7 @@ internal sealed partial class AssetLibrary
                               ))
             {
                 var stringInput = _state.ActivePathInput;
-                if (stringInput != null && !isSelected)
+                if (stringInput != null && !isSelected && fileConsumerOpIsCompatible)
                 {
                     _state.ActiveAbsolutePath = asset.AbsolutePath;
 
@@ -216,7 +226,7 @@ internal sealed partial class AssetLibrary
                                                 title: asset.FileInfo.Name,
                                                 id: "##symbolTreeSymbolContextMenu");
 
-            DragAndDropHandling.HandleDragSourceForLastItem(DragAndDropHandling.SymbolDraggingId, asset.FileAliasPath, "Move or use asset");
+            DragAndDropHandling.HandleDragSourceForLastItem(DragAndDropHandling.AssetDraggingId, asset.FileAliasPath, "Move or use asset");
 
             if (ImGui.IsItemHovered())
             {
@@ -238,15 +248,15 @@ internal sealed partial class AssetLibrary
                 }
             }
 
-            // Click
-            if (ImGui.IsItemDeactivated())
-            {
-                var wasClick = ImGui.GetMouseDragDelta().Length() < 4;
-                if (wasClick)
-                {
-                    // TODO: implement
-                }
-            }
+            // // Click
+            // if (ImGui.IsItemDeactivated())
+            // {
+            //     var wasClick = ImGui.GetMouseDragDelta().Length() < 4;
+            //     if (wasClick)
+            //     {
+            //         // TODO: implement
+            //     }
+            // }
         }
 
         ImGui.PopID();
@@ -327,17 +337,17 @@ internal sealed partial class AssetLibrary
         UndoRedoStack.Add(changeInputValueCommand);
     }
 
-    private static void HandleDropTarget(AssetFolder subtree)
-    {
-        if (!DragAndDropHandling.TryGetDataDroppedLastItem(DragAndDropHandling.AssetDraggingId, out var data))
-            return;
-
-        // TODO: Implement dragging of files
-
-        // if (!Guid.TryParse(data, out var path))
-        //     return;
-        //
-        // if (!MoveSymbolToNamespace(path, subtree.GetAsString(), out var reason))
-        //     BlockingWindow.Instance.ShowMessageBox(reason, "Could not move symbol's namespace");
-    }
+    // private static void HandleDropTarget(AssetFolder subtree)
+    // {
+    //     if (!DragAndDropHandling.TryGetDataDroppedLastItem(DragAndDropHandling.AssetDraggingId, out var data))
+    //         return;
+    //
+    //     // TODO: Implement dragging of files
+    //
+    //     // if (!Guid.TryParse(data, out var path))
+    //     //     return;
+    //     //
+    //     // if (!MoveSymbolToNamespace(path, subtree.GetAsString(), out var reason))
+    //     //     BlockingWindow.Instance.ShowMessageBox(reason, "Could not move symbol's namespace");
+    // }
 }
